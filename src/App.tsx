@@ -22,6 +22,14 @@ const App = () => {
 
     return Number((EMI / 12).toFixed(0));
   };
+
+  const calculateDP = (emiAmt: number): number => {
+    if (!cost) return 0;
+
+    const downPayPer = 100 - (emiAmt / calculateEMI(0)) * 100;
+    return Number(((downPayPer / 100) * cost).toFixed(0));
+  };
+
   const updateEMI = (e: ChangeEvent<HTMLInputElement>) => {
     if (!cost) return;
     const dp = Number(e.target.value);
@@ -31,9 +39,12 @@ const App = () => {
     setEmi(updatedEmi);
   };
   const updateDownPayment = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!cost) return;
+    if (!cost) return 0;
     const emi = Number(e.target.value);
     setEmi(Number(emi.toFixed(0)));
+
+    const updatedDp = calculateDP(emi);
+    setDownPayment(updatedDp);
   };
 
   return (
