@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const App = () => {
   const [cost, setCost] = useState<number>(0);
@@ -7,6 +7,20 @@ const App = () => {
   const [downPayment, setDownPayment] = useState<number>(0);
   const [tenure, setTenure] = useState<number>(10);
   const [emi, setEmi] = useState<number>(0);
+
+  const updateEMI = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!cost) return;
+    const dp = Number(e.target.value);
+    setDownPayment(Number(dp.toFixed(0)));
+  };
+  const updateDownPayment = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!cost) return;
+    const emi = Number(e.target.value);
+    setEmi(Number(emi.toFixed(0)));
+  };
+  const calculateEMI = (value: number): number => {
+    return cost;
+  };
 
   return (
     <div className="mt-7 flex px-4 flex-col gap-5">
@@ -35,9 +49,38 @@ const App = () => {
         placeholder="Processing Fees"
         onChange={(e) => setFee(Number(e.target.value))}
       />
-
       <span className="font-bold text-xl ">Down Payment</span>
+      <div>
+        <input
+          type="range"
+          className="w-3/12"
+          min={0}
+          max={cost}
+          value={downPayment}
+          onChange={updateEMI}
+        />
+        <div className="w-3/12 flex justify-between">
+          <label>0%</label>
+          <b>{downPayment}</b>
+          <label>100%</label>
+        </div>
+      </div>
       <span className="font-bold text-xl ">Loan Per Month</span>
+      <div>
+        <input
+          type="range"
+          className="w-3/12"
+          min={calculateEMI(cost)}
+          max={calculateEMI(0)}
+          value={emi}
+          onChange={updateDownPayment}
+        />
+        <div className="w-3/12 flex justify-between">
+          <label>{calculateEMI(cost)}</label>
+          <b>{downPayment}</b>
+          <label>{calculateEMI(0)}</label>
+        </div>
+      </div>
       <span className="font-bold text-xl ">Tenure</span>
     </div>
   );
