@@ -9,13 +9,26 @@ const App = () => {
   const [tenure, setTenure] = useState<number>(12);
   const [emi, setEmi] = useState<number>(0);
 
-  const calculateEMI = (value: number): number => {
-    return cost;
+  const calculateEMI = (downPay: number): number => {
+    if (!cost) return 0;
+
+    const loanAmt = cost - downPay;
+    const rateOfInterest = interest / 100;
+    const numOfYears = tenure / 12;
+
+    const EMI =
+      (loanAmt * rateOfInterest * (1 + rateOfInterest) ** numOfYears) /
+      ((1 + rateOfInterest) ** numOfYears - 1);
+
+    return Number((EMI / 12).toFixed(0));
   };
   const updateEMI = (e: ChangeEvent<HTMLInputElement>) => {
     if (!cost) return;
     const dp = Number(e.target.value);
     setDownPayment(Number(dp.toFixed(0)));
+
+    const updatedEmi = calculateEMI(dp);
+    setEmi(updatedEmi);
   };
   const updateDownPayment = (e: ChangeEvent<HTMLInputElement>) => {
     if (!cost) return;
@@ -78,7 +91,7 @@ const App = () => {
         />
         <div className="w-3/12 flex justify-between">
           <label>{calculateEMI(cost)}</label>
-          <b>{downPayment}</b>
+          <b>{emi}</b>
           <label>{calculateEMI(0)}</label>
         </div>
       </div>
