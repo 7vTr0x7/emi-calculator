@@ -104,7 +104,10 @@ const App = () => {
           <label>100%</label>
         </div>
       </div>
-      <span className="font-bold text-xl ">Loan Per Month</span>
+      <span className="font-bold text-xl ">Loan Per Month</span>{" "}
+      <span className="font-bold text-lg underline">
+        Total Loan Amt : {Number(emi * tenure).toFixed(0)}
+      </span>
       <div>
         <input
           type="range"
