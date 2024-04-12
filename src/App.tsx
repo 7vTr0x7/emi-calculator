@@ -47,6 +47,15 @@ const App = () => {
     setDownPayment(updatedDp);
   };
 
+  const totalEmi = (): number => {
+    return Number((emi * tenure).toFixed(0));
+  };
+  const totalDp = (): number => {
+    return Number(
+      (downPayment + (cost - downPayment) * (fee / 100)).toFixed(0)
+    );
+  };
+
   useEffect(() => {
     if (!(cost > 0)) {
       setEmi(0);
@@ -86,8 +95,7 @@ const App = () => {
       />
       <span className="font-bold text-xl ">Down Payment</span>
       <span className="font-bold text-lg underline">
-        Total Down Payment :
-        {Number(downPayment + (cost - downPayment) * (fee / 100)).toFixed(0)}
+        Total Down Payment :{totalDp()}
       </span>
       <div>
         <input
@@ -106,7 +114,7 @@ const App = () => {
       </div>
       <span className="font-bold text-xl ">Loan Per Month</span>{" "}
       <span className="font-bold text-lg underline">
-        Total Loan Amt : {Number(emi * tenure).toFixed(0)}
+        Total Loan Amt : {totalEmi()}
       </span>
       <div>
         <input
