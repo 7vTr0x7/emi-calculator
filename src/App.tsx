@@ -1,13 +1,17 @@
 import { ChangeEvent, useState } from "react";
+import { tenureData } from "./utils/constants";
 
 const App = () => {
   const [cost, setCost] = useState<number>(0);
   const [interest, setInterest] = useState<number>(10);
   const [fee, setFee] = useState<number>(1);
   const [downPayment, setDownPayment] = useState<number>(0);
-  const [tenure, setTenure] = useState<number>(10);
+  const [tenure, setTenure] = useState<number>(12);
   const [emi, setEmi] = useState<number>(0);
 
+  const calculateEMI = (value: number): number => {
+    return cost;
+  };
   const updateEMI = (e: ChangeEvent<HTMLInputElement>) => {
     if (!cost) return;
     const dp = Number(e.target.value);
@@ -17,9 +21,6 @@ const App = () => {
     if (!cost) return;
     const emi = Number(e.target.value);
     setEmi(Number(emi.toFixed(0)));
-  };
-  const calculateEMI = (value: number): number => {
-    return cost;
   };
 
   return (
@@ -82,6 +83,18 @@ const App = () => {
         </div>
       </div>
       <span className="font-bold text-xl ">Tenure</span>
+      <div className="flex w-3/12 justify-between gap-3">
+        {tenureData.map((ten) => (
+          <button
+            className={`bg-gray-300 h-9 w-[12%] rounded-xl ${
+              ten === tenure && "bg-blue-200"
+            } `}
+            key={ten}
+            onClick={() => setTenure(ten)}>
+            {ten}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
