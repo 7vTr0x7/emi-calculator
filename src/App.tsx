@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { tenureData } from "./utils/constants";
 
 const App = () => {
@@ -47,6 +47,16 @@ const App = () => {
     setDownPayment(updatedDp);
   };
 
+  useEffect(() => {
+    if (!(cost > 0)) {
+      setEmi(0);
+      setDownPayment(0);
+    }
+
+    const updatedEmi = calculateEMI(downPayment);
+    setEmi(updatedEmi);
+  }, [tenure]);
+
   return (
     <div className="mt-7 flex px-4 flex-col gap-5">
       <span className="font-bold text-3xl ">EMI Calculator</span>
@@ -75,6 +85,10 @@ const App = () => {
         onChange={(e) => setFee(Number(e.target.value))}
       />
       <span className="font-bold text-xl ">Down Payment</span>
+      <span className="font-bold text-lg underline">
+        Total Down Payment :
+        {Number(downPayment + (cost - downPayment) * (fee / 100)).toFixed(0)}
+      </span>
       <div>
         <input
           type="range"
